@@ -122,13 +122,7 @@ export interface DimSlice {
   prevTotals: Totals
 }
 
-export function byDimension(
-  rows: DailyRow[],
-  dim: 'region' | 'channel',
-  cur: DailyRow[],
-  prev: DailyRow[],
-): DimSlice[] {
-  void rows
+export function byDimension(dim: 'region' | 'channel', cur: DailyRow[], prev: DailyRow[]): DimSlice[] {
   const group = (subset: DailyRow[]): Map<string, Totals> => {
     const m = new Map<string, Totals>()
     for (const r of subset) {

@@ -215,16 +215,15 @@ export function useOps(): OpsBundle {
   }, [ds.orders])
 
   const channelSlices = useMemo(() => {
-    const rows = region === 'all' ? curRows : curRows
-    const ch = byDimension(rows, 'channel', curRows, prevRows)
+    const ch = byDimension('channel', curRows, prevRows)
     if (channel === 'all') return ch
     return ch.filter((s) => s.key === channel)
-  }, [curRows, prevRows, region, channel])
+  }, [curRows, prevRows, channel])
 
-  const regionSlices = useMemo(
-    () => (region === 'all' ? byDimension(curRows, 'region', curRows, prevRows) : byDimension(curRows, 'region', curRows, prevRows).filter((s) => s.key === region)),
-    [curRows, prevRows, region],
-  )
+  const regionSlices = useMemo(() => {
+    const rg = byDimension('region', curRows, prevRows)
+    return region === 'all' ? rg : rg.filter((s) => s.key === region)
+  }, [curRows, prevRows, region])
 
   const kpiCtx = useMemo(
     () => ({
@@ -306,14 +305,3 @@ export function useOps(): OpsBundle {
   }
 }
 
-/** Trend data for arbitrary KPI ids, bucketed like the main trend. */
-export function useBucketedSeries(metricFn: (t: Totals) => number): { label: string; value: number }[] {
-  const { range, bucket } = useRangeInfo()
-  const region = useStore((s) => s.region)
-  const channel = useStore((s) => s.channel)
-  const ds = getDataset()
-  return useMemo(() => {
-    const rows = filterDaily(ds.daily, region, channel).filter((r) => inRange(r.day, range))
-    return bucketRows(rows, bucket).map((r) => ({ label: bucketLabel(r.day, bucket), value: metricFn(sumTotals([r])) }))
-  }, [ds.daily, region, channel, range, bucket, metricFn])
-}

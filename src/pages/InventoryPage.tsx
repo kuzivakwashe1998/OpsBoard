@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Download, PackagePlus, Search } from 'lucide-react'
 import { CATEGORIES, type Category } from '../data/model'
 import { useOps, useDataset } from '../data/selectors'
 import type { SkuComputed } from '../data/selectors'
+import { useFocusParam } from '../lib/useFocusParam'
 import { DataTable } from '../components/ui/DataTable'
 import { Badge, Button, Card, ProgressBar, Select, TextInput } from '../components/ui/primitives'
 import { StatusBadge, STOCK_STATUS_TONE } from '../components/shared'
@@ -29,6 +30,15 @@ export function InventoryPage() {
   const [search, setSearch] = useState('')
   const [cat, setCat] = useState<Category | 'all'>('all')
   const [riskOnly, setRiskOnly] = useState(false)
+  const [focusSku, clearFocus] = useFocusParam()
+
+  useEffect(() => {
+    if (focusSku) {
+      setSearch(focusSku)
+      clearFocus()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusSku])
 
   const ops = useOps()
   const items = ops.stock.items

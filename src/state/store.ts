@@ -160,6 +160,3 @@ export const useStore = create<AppState>()(
     },
   ),
 )
-
-/** Read-only snapshot helper for non-hook code (palette actions). */
-export const storeApi = useStore

@@ -52,8 +52,6 @@ export function weightedPick<T>(rng: Rng, items: readonly T[], weights: readonly
   return items[items.length - 1]
 }
 
-export const randBool = (rng: Rng, p: number): boolean => rng() < p
-
 export function shuffle<T>(rng: Rng, arr: readonly T[]): T[] {
   const out = [...arr]
   for (let i = out.length - 1; i > 0; i--) {

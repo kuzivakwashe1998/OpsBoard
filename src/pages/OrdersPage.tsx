@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Download, Flame, Search, X } from 'lucide-react'
-import { useSearchParams } from 'react-router-dom'
 import type { OrderRecord, OrderStatus } from '../data/model'
 import { ORDER_STATUSES } from '../data/model'
 import { useOps, useDataset } from '../data/selectors'
+import { useFocusParam } from '../lib/useFocusParam'
 import { DataTable } from '../components/ui/DataTable'
 import { Sheet } from '../components/ui/Sheet'
 import { Badge, Button, Card, Select, TextInput } from '../components/ui/primitives'
@@ -23,11 +23,15 @@ export function OrdersPage() {
   const pushToast = useStore((s) => s.pushToast)
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState<OrderStatus | 'all'>('all')
-  const [params, setParams] = useSearchParams()
-  const focusId = params.get('focus')
-  const [selected, setSelected] = useState<OrderRecord | null>(() =>
-    focusId ? (ops.scopedOrders.find((o) => o.id === focusId) ?? null) : null,
-  )
+  const [focusId, clearFocus] = useFocusParam()
+  const [selected, setSelected] = useState<OrderRecord | null>(null)
+
+  // respond to ?focus=ORD-… deep links (e.g. from the command palette)
+  useEffect(() => {
+    if (!focusId) return
+    const hit = ops.scopedOrders.find((o) => o.id === focusId)
+    if (hit) setSelected(hit)
+  }, [focusId, ops.scopedOrders])
 
   const data = useMemo(() => {
     let rows = ops.scopedOrders
@@ -205,7 +209,7 @@ export function OrdersPage() {
         </div>
       </Card>
 
-      <OrderSheet order={selected} onClose={() => { setSelected(null); setParams({}) }} />
+      <OrderSheet order={selected} onClose={() => { setSelected(null); clearFocus() }} />
     </div>
   )
 }

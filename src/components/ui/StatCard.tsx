@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { ArrowDownRight, ArrowUpRight, Minus } from 'lucide-react'
 import { cn } from '../../lib/cn'
 import { fmtDeltaPct, fmtDurationMin, fmtInt, fmtMoney, fmtPct, fmtPp } from '../../lib/format'
@@ -31,14 +30,10 @@ export function StatCard({
   kpi,
   compareLabel,
   className,
-  leading,
-  onClick,
 }: {
   kpi: Kpi
   compareLabel?: string
   className?: string
-  leading?: ReactNode
-  onClick?: () => void
 }) {
   const goodDir = kpi.delta === null ? null : kpi.delta > 0 === kpi.def.goodWhenUp ? true : kpi.delta < 0 === kpi.def.goodWhenUp ? false : null
   const Arrow = kpi.delta === null || kpi.delta === 0 ? Minus : kpi.delta > 0 ? ArrowUpRight : ArrowDownRight
@@ -51,31 +46,11 @@ export function StatCard({
 
   return (
     <div
-      className={cn(
-        'card group relative flex flex-col gap-2 px-4 pt-3.5 pb-3 transition-shadow',
-        onClick && 'cursor-pointer hover:shadow-md focus-visible:outline-2 focus-visible:outline-emerald-600',
-        className,
-      )}
-      onClick={onClick}
-      role={onClick ? 'button' : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      onKeyDown={
-        onClick
-          ? (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                onClick()
-              }
-            }
-          : undefined
-      }
+      className={cn('card flex flex-col gap-2 px-4 pt-3.5 pb-3', className)}
       title={kpi.def.tip}
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-1.5 text-[11px] font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
-          {leading}
-          {kpi.def.label}
-        </span>
+        <span className="text-[11px] font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">{kpi.def.label}</span>
         {kpi.status && <StatusDot tone={STATUS_TONE[kpi.status]} />}
       </div>
 

@@ -36,7 +36,7 @@ export function Heatmap({
         {cells.map((row, ri) => (
           <div key={ri} className="contents">
             <div className="muted flex items-center justify-end pr-1 text-[9.5px] font-medium">{DAYS_LTR[ri]}</div>
-            <div className="grid grid-cols-24 gap-[3px]" style={{ gridTemplateColumns: 'repeat(24, minmax(0, 1fr))' }}>
+            <div className="grid gap-[3px]" style={{ gridTemplateColumns: 'repeat(24, minmax(0, 1fr))' }}>
               {row.map((v, ci) => (
                 <div
                   key={ci}

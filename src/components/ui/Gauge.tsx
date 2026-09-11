@@ -30,7 +30,6 @@ export function Gauge({
       role="img"
       aria-label={`${label ?? 'gauge'}: ${v.toFixed(1)}%`}
     >
-      <div className="absolute inset-0 rounded-full" style={{ margin: stroke }} />
       <div
         className="absolute rounded-full bg-white dark:bg-slate-900"
         style={{ inset: stroke }}

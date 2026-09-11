@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createColumnHelper } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 import { Download, Search } from 'lucide-react'
 import type { TicketRecord } from '../data/model'
 import { PRIORITIES } from '../data/model'
 import { useOps, useDataset } from '../data/selectors'
+import { useFocusParam } from '../lib/useFocusParam'
 import { DataTable } from '../components/ui/DataTable'
 import { Badge, Button, Card, Select, TextInput } from '../components/ui/primitives'
 import { PRIORITY_TONE, StatusBadge, TICKET_STATUS_TONE, ticketSlaState } from '../components/shared'
@@ -30,6 +31,13 @@ export function SupportPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('needs_reply')
   const [priority, setPriority] = useState<string>('all')
   const [selected, setSelected] = useState<TicketRecord | null>(null)
+  const [focusId, clearFocus] = useFocusParam()
+
+  useEffect(() => {
+    if (!focusId) return
+    const hit = ds.tickets.find((t) => t.id === focusId)
+    if (hit) setSelected(hit)
+  }, [focusId, ds.tickets])
 
   const nowMs = new Date(ds.generatedAt).getTime()
 
@@ -269,7 +277,7 @@ export function SupportPage() {
         </div>
       </div>
 
-      <TicketSheet ticket={selected} onClose={() => setSelected(null)} nowMs={nowMs} />
+      <TicketSheet ticket={selected} onClose={() => { setSelected(null); clearFocus() }} nowMs={nowMs} />
     </div>
   )
 }

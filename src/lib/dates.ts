@@ -87,14 +87,4 @@ export function bucketLabel(key: string, g: Granularity): string {
   return dayjs(key).format('MMM D')
 }
 
-export const isWeekend = (iso: string): boolean => {
-  const d = dayjs(iso).day()
-  return d === 0 || d === 6
-}
-
-export const dayOfWeekIndex = (iso: string): number => (dayjs(iso).day() + 6) % 7 // Monday-first
-
 export const DAYS_LTR = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-
-/** Rough "minutes since" for live ticks. */
-export const minutesAgo = (iso: string, now = dayjs()): number => now.diff(dayjs(iso), 'minute')

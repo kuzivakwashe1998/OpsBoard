@@ -6,7 +6,6 @@ interface SparklineProps {
   tone?: 'emerald' | 'rose' | 'amber' | 'sky' | 'slate' | 'violet'
   height?: number
   className?: string
-  invert?: boolean // color by "bad when up" metrics
 }
 
 const TONE_HEX: Record<NonNullable<SparklineProps['tone']>, string> = {
@@ -19,7 +18,7 @@ const TONE_HEX: Record<NonNullable<SparklineProps['tone']>, string> = {
 }
 
 /** Dependency-free SVG sparkline with soft area fill and an end dot. */
-export function Sparkline({ data, tone = 'emerald', height = 36, className, invert }: SparklineProps) {
+export function Sparkline({ data, tone = 'emerald', height = 36, className }: SparklineProps) {
   const gid = useId().replace(/:/g, '')
   const W = 160
   const H = height
@@ -38,7 +37,7 @@ export function Sparkline({ data, tone = 'emerald', height = 36, className, inve
     return { line: lineStr, area: areaStr, lastX: lx, lastY: ly }
   }, [data, H])
 
-  const color = TONE_HEX[invert ? (tone === 'emerald' ? 'rose' : 'emerald') : tone]
+  const color = TONE_HEX[tone]
 
   if (!line) {
     return <div className={cn('flex h-9 items-center text-[10px] text-slate-400', className)}>not enough data</div>

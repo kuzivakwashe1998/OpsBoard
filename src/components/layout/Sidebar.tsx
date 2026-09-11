@@ -53,11 +53,7 @@ function DataStatusCard() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setAboutOpen(true)}
-        className="card w-full px-3.5 py-3 text-left transition-shadow hover:shadow-md"
-      >
+      <div className="card px-3.5 py-3">
         <div className="flex items-center justify-between">
           <span className="flex items-center gap-1.5 text-[10.5px] font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
             <Database className="h-3.5 w-3.5" /> Data status
@@ -80,22 +76,29 @@ function DataStatusCard() {
             <dd className="font-mono font-medium">{ds.seed}</dd>
           </div>
         </dl>
-      </button>
-      <div className="mt-2 flex justify-end">
-        <button
-          type="button"
-          onClick={toggleLive}
-          className={cn(
-            'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors',
-            live
-              ? 'bg-emerald-600 text-white shadow-sm hover:bg-emerald-700'
-              : 'border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300',
-          )}
-        >
-          <StatusDot tone={live ? 'emerald' : 'slate'} pulse={live} />
-          <Radio className="h-3 w-3" />
-          {live ? 'Pause live mode' : 'Simulate live'}
-        </button>
+        <div className="mt-2.5 flex items-center justify-between gap-2 border-t border-slate-100 pt-2.5 dark:border-slate-800">
+          <button
+            type="button"
+            onClick={() => setAboutOpen(true)}
+            className="muted rounded-md px-1 py-0.5 text-[11px] font-semibold hover:text-slate-700 hover:underline dark:hover:text-slate-200"
+          >
+            About this dataset
+          </button>
+          <button
+            type="button"
+            onClick={toggleLive}
+            className={cn(
+              'inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors',
+              live
+                ? 'bg-emerald-600 text-white shadow-sm hover:bg-emerald-700'
+                : 'border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700',
+            )}
+          >
+            <StatusDot tone={live ? 'emerald' : 'slate'} pulse={live} />
+            <Radio className="h-3 w-3" />
+            {live ? 'Pause' : 'Go live'}
+          </button>
+        </div>
       </div>
 
       <Modal open={aboutOpen} onClose={() => setAboutOpen(false)} title="About this dataset" wide>

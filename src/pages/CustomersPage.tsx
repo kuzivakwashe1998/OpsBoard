@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Download, Search, ShieldAlert } from 'lucide-react'
 import type { CustomerRecord } from '../data/model'
 import { SEGMENTS } from '../data/model'
 import { useOps, useDataset } from '../data/selectors'
+import { useFocusParam } from '../lib/useFocusParam'
 import { DataTable } from '../components/ui/DataTable'
 import { Badge, Button, Card, ProgressBar, Select, TextInput } from '../components/ui/primitives'
 import { Leaderboard } from '../components/charts/RegionBars'
@@ -27,6 +28,15 @@ export function CustomersPage() {
   const [search, setSearch] = useState('')
   const [segment, setSegment] = useState<string>('all')
   const [atRiskOnly, setAtRiskOnly] = useState(false)
+  const [focusId, clearFocus] = useFocusParam()
+
+  useEffect(() => {
+    if (!focusId) return
+    const c = customers.find((x) => x.id === focusId)
+    if (c) setSearch(c.name)
+    clearFocus()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusId])
 
   const customers = ds.customers
   const ordersByCustomer = useMemo(() => {

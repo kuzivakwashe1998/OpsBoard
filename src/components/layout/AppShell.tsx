@@ -5,12 +5,14 @@ import { Topbar } from './Topbar'
 import { FilterBar } from './FilterBar'
 import { CommandPalette } from './CommandPalette'
 import { useLiveEngine } from './useLiveEngine'
+import { useFilterUrlSync } from './useFilterUrlSync'
 import { Toaster } from '../ui/Toaster'
 import { useStore } from '../../state/store'
 
 export function AppShell() {
   const theme = useStore((s) => s.theme)
   useLiveEngine()
+  useFilterUrlSync()
 
   // keep <html> class in sync with persisted theme
   useEffect(() => {

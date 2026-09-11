@@ -121,9 +121,21 @@ export function DataTable<T>({
                   key={rowKey(row.original)}
                   className={cn(
                     'group border-b border-slate-100/90 transition-colors last:border-0 dark:border-slate-800/70',
-                    onRowClick && 'cursor-pointer hover:bg-emerald-50/40 dark:hover:bg-emerald-500/[0.04]',
+                    onRowClick &&
+                      'cursor-pointer hover:bg-emerald-50/40 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-emerald-600 dark:hover:bg-emerald-500/[0.04]',
                   )}
                   onClick={onRowClick ? () => onRowClick(row.original) : undefined}
+                  tabIndex={onRowClick ? 0 : undefined}
+                  onKeyDown={
+                    onRowClick
+                      ? (e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            onRowClick(row.original)
+                          }
+                        }
+                      : undefined
+                  }
                 >
                   {row.getVisibleCells().map((cell) => {
                     const align = (cell.column.columnDef.meta?.align as 'left' | 'right' | 'center' | undefined) ?? 'left'

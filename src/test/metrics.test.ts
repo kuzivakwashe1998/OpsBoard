@@ -110,7 +110,7 @@ describe('KPIs', () => {
 describe('byDimension', () => {
   it('splits by channel and computes share totals', () => {
     const rows = [row('2026-01-01'), row('2026-01-01', { channel: 'Retail', revenue: 3000 })]
-    const slices = byDimension(rows, 'channel', rows, [])
+    const slices = byDimension('channel', rows, [])
     expect(slices.map((s) => s.key).sort()).toEqual(['Online', 'Retail'])
     const retail = slices.find((s) => s.key === 'Retail')!
     expect(retail.totals.revenue).toBe(3000)

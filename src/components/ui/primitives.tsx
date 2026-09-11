@@ -176,12 +176,10 @@ export function Toggle({
   checked,
   onChange,
   label,
-  tone = 'emerald',
 }: {
   checked: boolean
   onChange: (v: boolean) => void
   label: ReactNode
-  tone?: 'emerald' | 'sky'
 }) {
   return (
     <button
@@ -194,11 +192,7 @@ export function Toggle({
       <span
         className={cn(
           'relative h-4.5 w-8 rounded-full transition-colors',
-          checked
-            ? tone === 'emerald'
-              ? 'bg-emerald-600'
-              : 'bg-sky-600'
-            : 'bg-slate-300 dark:bg-slate-600',
+          checked ? 'bg-emerald-600' : 'bg-slate-300 dark:bg-slate-600',
         )}
       >
         <span
@@ -252,13 +246,7 @@ export function Badge({ tone = 'neutral', dot, className, children }: { tone?: T
   )
 }
 
-export const toneForDot = (tone: Tone) => DOT_CLASS[tone]
-
 /* --------------------------- Skeleton/Empty ------------------------ */
-
-export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn('animate-pulse rounded-lg bg-slate-200/70 dark:bg-slate-800', className)} />
-}
 
 export function EmptyState({ title, body, action }: { title: string; body?: string; action?: ReactNode }) {
   return (

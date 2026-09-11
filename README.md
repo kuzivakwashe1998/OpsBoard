@@ -52,6 +52,8 @@ Markdown, plain-text-to-clipboard or CSV.
 **Across the app**
 - Global range presets (7D…All) + custom dates, region & channel filters,
   compare-to-previous toggle — one sticky filter bar drives every page.
+- Filters live in the URL (`?range=90d&region=EMEA&channel=Online`) so any view
+  is shareable/bookmarkable; command-palette jumps deep-link with `?focus=`.
 - ⌘K / Ctrl+K command palette: jump to pages, orders, SKUs, tickets, accounts.
 - **Live mode**: streams simulated events every few seconds and patches
   today's aggregates — KPIs, charts and feed all react.

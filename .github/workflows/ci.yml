@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci --no-audit --no-fund
+      - name: Lint
+        run: npm run lint
+      - name: Type-check + unit tests (via build)
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Bundle budget
+        run: |
+          SIZE=$(du -sm dist/assets/*.js | awk '{s+=$1} END {print s}')
+          echo "JS bundle total: ${SIZE}MB (on disk)"
+          if [ "$SIZE" -gt 6 ]; then echo "Bundle exceeds 6MB budget"; exit 1; fi
